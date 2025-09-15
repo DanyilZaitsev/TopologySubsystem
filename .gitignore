@@ -1,0 +1,42 @@
+# Build artifacts
+build/
+bin/
+out/
+dist/
+obj/
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+*.exe
+*.pdb
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake-build-*/
+compile_commands.json
+Makefile
+makefile
+install_manifest.txt
+CTestTestfile.cmake
+Testing/
+
+# IDE/editor
+.vscode/
+.idea/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Python venvs (if any tooling)
+.venv/
+venv/
