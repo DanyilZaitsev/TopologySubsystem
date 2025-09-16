@@ -1,21 +1,9 @@
 #include "Graph/Graph.cpp"
 #include "GraphLoad/GraphLoad.cpp"
+#include <unordered_map>
+#include <iostream>
 
 int main() {
-    /*std::vector<std::pair<int, int>> edges = {
-        {0, 1}, {0, 2}, {1, 2}, {2, 0}, {2, 3}, {3, 3}
-    };
-
-    Graph graph(edges);
-    graph.printGraph();
-
-    int v = 2;
-    auto neighbors = graph.getNeighbors(v);
-    std::cout << "Соседи вершины " << v << ": ";
-    for (int n : neighbors) {
-        std::cout << n << " ";
-    }
-    std::cout << "\n";*/
 
     std::string filename;
     std::cout << "Enter the name of the file with the graph: ";
@@ -25,7 +13,19 @@ int main() {
         auto edges = GraphLoader::loadAuto(filename);
 
         Graph graph(edges);
-        graph.printGraph();
+        //graph.printGraph();
+        //graph.getNeighbors(50);
+
+        int branchId = 45;
+        try {
+            double rj = graph.getAttribute(branchId, "Rj");
+            double fj = graph.getAttribute(branchId, "Fj");
+            std::cout << "Branch " << branchId << ":\n";
+            std::cout << "  Rj = " << rj << "\n";
+            std::cout << "  Fj = " << fj << "\n";
+        } catch (const std::exception& e) {
+            std::cerr << e.what() << "\n";
+        }
     }
     catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << "\n";

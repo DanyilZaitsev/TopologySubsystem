@@ -1,9 +1,10 @@
 #include <iostream>
 #include <vector>
+#include <unordered_map>
 #include <utility> // for using pair in vector
 #include "Graph.h"
 
-Graph::Graph (const std::vector<Edge>& edges) {
+Graph::Graph (const std::vector<Edge>& edges) : edges(edges) {
         
     // counting the vertices of a graph
     int vertices = 0;
@@ -70,3 +71,28 @@ void Graph::printGraph() const {
 int Graph::numVertices() const {
     return V;
 }
+
+// get neighbors with attributes of a node
+std::vector<std::pair<int, std::unordered_map<std::string,double>>>
+Graph::getNeighborsWithAttributes(int v) const {
+    std::vector<std::pair<int, std::unordered_map<std::string,double>>> neighbors;
+    for (int i = row_ptr[v]; i < row_ptr[v + 1]; ++i) {
+        neighbors.emplace_back(col_idx[i], edges[i].attributes);
+    }
+    return neighbors;
+}
+
+double Graph::getAttribute(int branchId, const std::string& attrName) const {
+    for (const auto& e : edges) {
+        if (e.id == branchId) {
+            auto it = e.attributes.find(attrName);
+            if (it != e.attributes.end()) {
+                return it->second;
+            } else {
+                throw std::runtime_error("Attribute '" + attrName + "' not found in branch " + std::to_string(branchId));
+            }
+        }
+    }
+    throw std::runtime_error("Branch with id=" + std::to_string(branchId) + " not found");
+}
+
