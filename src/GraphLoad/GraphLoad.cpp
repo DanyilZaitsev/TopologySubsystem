@@ -5,6 +5,7 @@
 #include <utility>
 #include <stdexcept>
 #include "../Graph/Graph.h"
+#include <unordered_map>
 
 class GraphLoader {
 public:
@@ -15,14 +16,18 @@ public:
             throw std::runtime_error("failed to open file: " + filename);
         }
 
+        static const std::vector<std::string> paramNames = {
+            "Rj", "Qjstat", "Hvj", "Fj", "Pj", "aj", "Lj", "Kj"
+        };
+
         std::string line;
         int auto_id = 0;
         while (std::getline(file, line)) {
             std::stringstream ss(line);
-            std::string token;
             std::string f, t, idstr;
             if (!std::getline(ss, f, ',')) continue;
             if (!std::getline(ss, t, ',')) continue;
+
             // trim spaces
             auto trim = [](std::string& s){
                 size_t a = s.find_first_not_of(" \t");
@@ -30,10 +35,12 @@ public:
                 if (a == std::string::npos) { s.clear(); return; }
                 s = s.substr(a, b - a + 1);
             };
+
             trim(f); trim(t);
             int from = std::stoi(f);
             int to = std::stoi(t);
             int id;
+
             if (std::getline(ss, idstr, ',')) {
                 trim(idstr);
                 if (!idstr.empty()) {
@@ -44,7 +51,18 @@ public:
             } else {
                 id = auto_id++;
             }
-            edges.push_back(Edge{from, to, id});
+
+            std::unordered_map<std::string, double> attributes;
+            for (const auto& param : paramNames) {
+                if (std::getline(ss, idstr, ',')) {
+                    trim(idstr);
+                    if (!idstr.empty()) {
+                        attributes[param] = std::stod(idstr);
+                    }
+                }
+            }
+
+            edges.push_back(Edge{from, to, id, attributes});
         }
         return edges;
     }
@@ -55,6 +73,10 @@ public:
         if (!file.is_open()) {
             throw std::runtime_error("failed to open file: " + filename);
         }
+
+        static const std::vector<std::string> paramNames = {
+            "Rj", "Qjstat", "Hvj", "Fj", "Pj", "aj", "Lj", "Kj"
+        };
 
         std::string line;
         int auto_id = 0;
@@ -72,7 +94,25 @@ public:
             } else {
                 id = auto_id++;
             }
-            edges.push_back(Edge{from, to, id});
+
+            auto trim = [](std::string& s){
+                size_t a = s.find_first_not_of(" \t");
+                size_t b = s.find_last_not_of(" \t");
+                if (a == std::string::npos) { s.clear(); return; }
+                s = s.substr(a, b - a + 1);
+            };
+
+            std::unordered_map<std::string, double> attributes;
+            for (const auto& param : paramNames) {
+                if (std::getline(ss, idstr, ',')) {
+                    trim(idstr);
+                    if (!idstr.empty()) {
+                        attributes[param] = std::stod(idstr);
+                    }
+                }
+            }
+
+            edges.push_back(Edge{from, to, id, attributes});
         }
         return edges;
     }
