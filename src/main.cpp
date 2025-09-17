@@ -1,5 +1,7 @@
-#include "Graph/Graph.cpp"
+#include "Graph/Graph.h"
 #include "GraphLoad/GraphLoad.cpp"
+#include "Graph/Decomposition.cpp"
+
 #include <unordered_map>
 #include <iostream>
 
@@ -13,10 +15,16 @@ int main() {
         auto edges = GraphLoader::loadAuto(filename);
 
         Graph graph(edges);
+
+        Decomposition dec(graph);
+        dec.build();
+        dec.print();
+
+
         //graph.printGraph();
         //graph.getNeighbors(50);
 
-        int branchId = 45;
+        /*int branchId = 45;
         try {
             double rj = graph.getAttribute(branchId, "Rj");
             double fj = graph.getAttribute(branchId, "Fj");
@@ -25,7 +33,9 @@ int main() {
             std::cout << "  Fj = " << fj << "\n";
         } catch (const std::exception& e) {
             std::cerr << e.what() << "\n";
-        }
+        }*/
+
+        
     }
     catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << "\n";

@@ -96,3 +96,11 @@ double Graph::getAttribute(int branchId, const std::string& attrName) const {
     throw std::runtime_error("Branch with id=" + std::to_string(branchId) + " not found");
 }
 
+const std::vector<Edge>& Graph::getEdges() const {
+    return edges;
+}
+
+const std::vector<int>& Graph::getRowPtr() const { return row_ptr; }
+const std::vector<int>& Graph::getColIdx() const { return col_idx; }
+const std::vector<int>& Graph::getEdgeIds() const { return edge_ids; }
+

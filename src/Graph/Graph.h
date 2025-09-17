@@ -45,6 +45,11 @@ class Graph {
     getNeighborsWithAttributes(int v) const;
 
     double getAttribute(int branchId, const std::string& attrName) const;
+
+    const std::vector<Edge>& getEdges() const;
+    const std::vector<int>& getRowPtr() const;
+    const std::vector<int>& getColIdx() const;
+    const std::vector<int>& getEdgeIds() const;
 };
 
 #endif
