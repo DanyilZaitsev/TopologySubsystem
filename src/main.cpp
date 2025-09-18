@@ -5,11 +5,12 @@
 #include <unordered_map>
 #include <iostream>
 
+// ../resources/Graph.csv
 int main() {
 
-    std::string filename;
-    std::cout << "Enter the name of the file with the graph: ";
-    std::cin >> filename;
+    std::string filename = "../resources/Graph.csv";
+    //std::cout << "Enter the name of the file with the graph: ";
+    //std::cin >> filename;
 
     try {
         auto edges = GraphLoader::loadAuto(filename);
@@ -18,7 +19,14 @@ int main() {
 
         Decomposition dec(graph);
         dec.build();
-        dec.print();
+        const auto& bm = dec.getBaum()[5];
+
+        int u = std::get<0>(bm);
+        int v = std::get<1>(bm);
+        int id = std::get<2>(bm);
+
+        std::cout << "Edge: " << u << " - " << v << " (id=" << id << ")\n";
+        //dec.print();
 
 
         //graph.printGraph();

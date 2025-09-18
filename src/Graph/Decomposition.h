@@ -4,6 +4,7 @@
 #include "Graph.cpp"
 #include <vector>
 #include <utility>
+#include <unordered_set>
 
 class Decomposition {
     private:
@@ -13,6 +14,10 @@ class Decomposition {
 
         std::vector<std::tuple<int, int, int>> baum;
         std::vector<std::tuple<int, int, int>> antibaum;
+
+        // Track which edge ids have been categorized to avoid duplicates and losses
+        std::unordered_set<int> treeEdgeIds;
+        std::unordered_set<int> antiEdgeIds;
 
         void dfs(int v);
 
