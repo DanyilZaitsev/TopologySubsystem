@@ -1,6 +1,7 @@
 #include "Graph/Graph.h"
 #include "GraphLoad/GraphLoad.cpp"
 #include "Graph/Decomposition.cpp"
+#include "Graph/IncidenceMatrix.cpp"
 
 #include <unordered_map>
 #include <iostream>
@@ -19,14 +20,14 @@ int main() {
 
         Decomposition dec(graph);
         dec.build();
-        const auto& bm = dec.getBaum()[5];
+        dec.print();
 
-        int u = std::get<0>(bm);
-        int v = std::get<1>(bm);
-        int id = std::get<2>(bm);
+        std::cout << "-----------------------------------------------------------------------------" << "\n";
 
-        std::cout << "Edge: " << u << " - " << v << " (id=" << id << ")\n";
-        //dec.print();
+        IncidenceMatrix mat(graph);
+        mat.print();
+        std::cout << "-----------------------------------------------------------------------------" << "\n";
+        mat.validateAndPrintSummary();
 
 
         //graph.printGraph();
