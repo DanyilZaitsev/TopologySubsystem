@@ -2,6 +2,7 @@
 #include "GraphLoad/GraphLoad.cpp"
 #include "Graph/Decomposition.cpp"
 #include "Graph/IncidenceMatrix.cpp"
+#include "Graph/ContourMatrix.cpp"
 
 #include <unordered_map>
 #include <iostream>
@@ -14,20 +15,29 @@ int main() {
     //std::cin >> filename;
 
     try {
-        auto edges = GraphLoader::loadAuto(filename);
+        auto edges1 = GraphLoader::loadAuto(filename);
 
-        Graph graph(edges);
-
+        Graph graph(edges1);
         Decomposition dec(graph);
-        dec.build();
-        dec.print();
-
-        std::cout << "-----------------------------------------------------------------------------" << "\n";
-
         IncidenceMatrix mat(graph);
-        mat.print();
+        ContourMatrix CM(graph, dec);
+
+        dec.build();
+        //dec.print();
+
         std::cout << "-----------------------------------------------------------------------------" << "\n";
-        mat.validateAndPrintSummary();
+
+        //mat.print();
+
+        if (!mat.validate()) {
+            std::cout << "Incidence matrix validation failed: some columns don't have exactly one -1 and one +1.\n";
+        }
+
+        CM.build();
+        //CM.validate();
+        CM.printSparse();
+        //CM.printDense();
+
 
 
         //graph.printGraph();

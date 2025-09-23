@@ -9,14 +9,17 @@ class IncidenceMatrix {
 private:
     std::vector<std::vector<int>> matrix;
 
+    int minEdgeId = 0;
+    int maxEdgeId = -1;
+
 public:
     IncidenceMatrix(const Graph& graph);
 
-    const std::vector<std::vector<int>>& getMatrix() const;
+    const std::vector<std::vector<int>>& getMatrix() const { return matrix; };
 
     void print() const;
 
-    void validateAndPrintSummary() const;
+    bool validate(bool printProblems = true) const;
 };
 
 #endif
